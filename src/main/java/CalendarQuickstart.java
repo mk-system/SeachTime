@@ -12,6 +12,7 @@ import com.google.api.client.util.store.FileDataStoreFactory;
 import com.google.api.services.calendar.Calendar;
 import com.google.api.services.calendar.CalendarScopes;
 import com.google.api.services.calendar.model.Event;
+import com.google.api.services.calendar.model.EventDateTime;
 import com.google.api.services.calendar.model.Events;
 
 import java.io.FileNotFoundException;
@@ -53,6 +54,7 @@ public class CalendarQuickstart {
         }
         GoogleClientSecrets clientSecrets = GoogleClientSecrets.load(JSON_FACTORY, new InputStreamReader(in));
 
+        //kimisidaierssyakimmiisidairessyanarittaidesukimisidairessyakimisidairessyaninaritakunai
 
 
         // Build flow and trigger user authorization request.
@@ -67,7 +69,9 @@ public class CalendarQuickstart {
         return credential;
     }
 
+
     public static void main(String... args) throws IOException, GeneralSecurityException {
+
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
         Calendar service = new Calendar.Builder(HTTP_TRANSPORT, JSON_FACTORY, getCredentials(HTTP_TRANSPORT))
@@ -75,25 +79,35 @@ public class CalendarQuickstart {
                 .build();
 
 
+
+
         // List the next 10 events from the primary calendar.
         DateTime now = new DateTime(System.currentTimeMillis());
         Events events = service.events().list("primary")
-                .setMaxResults(10)
+                .setMaxResults(100)
                 .setTimeMin(now)
                 .setOrderBy("startTime")
                 .setSingleEvents(true)
                 .execute();
         List<Event> items = events.getItems();
         if (items.isEmpty()) {
-            System.out.println("No upcoming events found.");
+            System.out.println("予定はありません");
         } else {
-            System.out.println("Upcoming events");
+            System.out.println("今後の予定");
             for (Event event : items) {
-                DateTime start = event.getStart().getDateTime();
-                if (start == null) {
-                    start = event.getStart().getDate();
+
+
+                EventDateTime start = event.getStart();
+                EventDateTime end = event.getEnd();
+
+                if (end == null ){
+                    System.out.printf("%s (%s)\n", event.getSummary(), start);
+                }else{
+                    System.out.printf("%s (%s) (%s)\n", event.getSummary(), start,end);
+
                 }
-                System.out.printf("%s (%s)\n", event.getSummary(), start);
+
+
             }
         }
     }
