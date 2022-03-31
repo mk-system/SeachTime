@@ -22,6 +22,7 @@ import java.io.InputStreamReader;
 import java.security.GeneralSecurityException;
 import java.util.Collections;
 import java.util.List;
+import java.util.Scanner;
 
 /* class to demonstarte use of Calendar events list API */
 public class CalendarQuickstart {
@@ -71,6 +72,9 @@ public class CalendarQuickstart {
 
 
     public static void main(String... args) throws IOException, GeneralSecurityException {
+        Scanner scanner = new Scanner(System.in);
+        String schedule1 = scanner.next();
+        String yotei = schedule1;
 
         // Build a new authorized API client service.
         final NetHttpTransport HTTP_TRANSPORT = GoogleNetHttpTransport.newTrustedTransport();
@@ -100,11 +104,17 @@ public class CalendarQuickstart {
                 EventDateTime start = event.getStart();
                 EventDateTime end = event.getEnd();
 
-                if (end == null ){
+               /* if (end == null ){
                     System.out.printf("%s (%s)\n", event.getSummary(), start);
                 }else{
                     System.out.printf("%s (%s) (%s)\n", event.getSummary(), start,end);
 
+                }*/
+               // System.out.println(events.getItems());
+               // System.out.println(event.getSummary() == "エムケイシステム1");
+
+                if (yotei.equals(event.getSummary())){
+                    System.out.printf("%s (%s) (%s)\n", event.getSummary(), start,end);
                 }
 
 
